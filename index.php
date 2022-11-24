@@ -1,7 +1,6 @@
 <?php
 
 use app\controllers\MainController;
-
 require 'vendor/autoload.php';
 
 try {

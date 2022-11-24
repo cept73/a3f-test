@@ -28,15 +28,6 @@ class MainController extends BaseController
 
         $tagsList = HtmlParser::parse($pageContent);
 
-        return $this->renderContentTags($tagsList);
-    }
-
-    /**
-     * @param $tagsList
-     * @return string|null
-     */
-    public function renderContentTags($tagsList): ?string
-    {
         return ArrayView::render('parseTemplate', ['tags' => $tagsList]);
     }
 }

@@ -68,6 +68,7 @@ class HtmlParser extends BaseParser
     public static function parse($body): array
     {
         $allTagsList = self::getTagsListForBody($body);
+
         return self::getTagsWithCountList($allTagsList);
     }
 }

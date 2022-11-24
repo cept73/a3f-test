@@ -10,8 +10,7 @@ $testsClassList = [
 
 /** @var BaseTest $testClass */
 foreach ($testsClassList as $testClass) {
-    $success = $testClass::run();
-    if ($success) {
+    if ($testClass::run()) {
         print "[+] $testClass success\n";
     } else {
         print "[-] $testClass failed\n";
