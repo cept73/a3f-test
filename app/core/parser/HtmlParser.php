@@ -2,8 +2,6 @@
 
 namespace app\core\parser;
 
-use app\core\exceptions\UnknownActionException;
-
 class HtmlParser extends BaseParser
 {
     private static function getStatesMachineRules(): array
@@ -13,15 +11,15 @@ class HtmlParser extends BaseParser
         $rules[] = StateRuleFacade::forState(StateRule::STATE_UNSET)
             ->ifChar('<')
             ->changeState(StateRule::STATE_TAG_STARTED)
-            ->doAction(StateRule::ACTION_CLEAR);
+            ->doAction(StateClearAction::getInstance());
 
         $rules[] = StateRuleFacade::forState(StateRule::STATE_TAG_STARTED)
-            ->doAction(StateRule::ACTION_PUT);
+            ->doAction(StatePutAction::getInstance());
 
         $rules[] = StateRuleFacade::forState(StateRule::STATE_TAG_STARTED)
             ->ifChar(' ')
             ->changeState(StateRule::STATE_SKIP)
-            ->doAction(StateRule::ACTION_STORE);
+            ->doAction(StateStoreAction::getInstance());
 
         $rules[] = StateRuleFacade::forState(StateRule::STATE_SKIP)
             ->ifChar('>')
@@ -30,14 +28,11 @@ class HtmlParser extends BaseParser
         $rules[] = StateRuleFacade::forState(StateRule::STATE_TAG_STARTED)
             ->ifChar('>')
             ->changeState(StateRule::STATE_UNSET)
-            ->doAction(StateRule::ACTION_STORE);
+            ->doAction(StateStoreAction::getInstance());
 
         return $rules;
     }
 
-    /**
-     * @throws UnknownActionException
-     */
     private static function getTagsListForBody(string $body): array
     {
         $stateMachine = new StateMachine(self::getStatesMachineRules());
@@ -62,9 +57,6 @@ class HtmlParser extends BaseParser
         return $tagsInfo;
     }
 
-    /**
-     * @throws UnknownActionException
-     */
     public static function parse($body): array
     {
         $allTagsList = self::getTagsListForBody($body);

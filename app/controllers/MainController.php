@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\core\exceptions\InputNotFoundException;
-use app\core\exceptions\UnknownActionException;
 use app\core\parser\HtmlParser;
 use app\core\request\RequestService;
 use app\core\source\UrlService;
@@ -15,14 +14,14 @@ class MainController extends BaseController
     /**
      * @return string|null
      * @throws InputNotFoundException
-     * @throws UnknownActionException
      */
     public function actionParse(): ?string
     {
-        if (($url = RequestService::getUrl()) === null) {
+        if (null === ($url = RequestService::getUrl())) {
             throw new InputNotFoundException("Url is not specified");
         }
-        if (($pageContent = UrlService::get($url)) === null) {
+
+        if (null === ($pageContent = UrlService::get($url))) {
             throw new InputNotFoundException("File $url is not found");
         }
 

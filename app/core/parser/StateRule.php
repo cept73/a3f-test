@@ -8,14 +8,10 @@ class StateRule
     public const STATE_TAG_STARTED  = 1;
     public const STATE_SKIP         = 2;
 
-    public const ACTION_PUT         = 0;
-    public const ACTION_CLEAR       = 1;
-    public const ACTION_STORE       = 2;
-
     private ?string $_char          = null;
     private ?int $_forState         = null;
     private ?int $_newState         = null;
-    private ?int $_action           = null;
+    private ?StateAction $_action   = null;
 
     public function ifChar(string $char): static
     {
@@ -35,7 +31,7 @@ class StateRule
         return $this;
     }
 
-    public function doAction($action): static
+    public function doAction(?StateAction $action): static
     {
         $this->_action = $action;
         return $this;
@@ -65,10 +61,7 @@ class StateRule
         return $this->_newState;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getAction(): ?int
+    public function getAction(): ?StateAction
     {
         return $this->_action;
     }
